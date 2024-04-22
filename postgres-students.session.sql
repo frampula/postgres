@@ -1,18 +1,23 @@
-CREATE TABLE users(
-    first_name VARCHAR(64) NOT NULL CHECK (first_name != ''),
-    last_name VARCHAR(64) NOT NULL CHECK (last_name != ''),
-    biography text,
-    gender VARCHAR(30) NOT NULL CHECK (gender != ''),
-    is_subscribed boolean NOT NULL,
-    birthday date,
-    foot_size smallint,
-    height numeric(5, 2)
-)
+DROP TABLE messages;
 
-INSERT INTO users VALUES(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
- 
- INSERT INTO users VALUES
-('Susan', 'Doe', 'Тут може бути якась неймовірно велика розповідь про Сьюзан', 'female', true, '1994-09-14', 40, 1.65),
-('Peter', 'Doe', 'Тут може бути якась неймовірно велика розповідь про Пітера', 'male', false, '1990-09-14', 46, 1.95);
+CREATE TABLE messages(
+    id serial PRIMARY KEY,
+    body text NOT NULL CHECK (body != ''),
+    author varchar(256) NOT NULL CHECK (author != ''),
+    created_at timestamp DEFAULT current_timestamp,
+    is_read boolean DEFAULT false
+);
 
-DROP TABLE users;
+
+INSERT INTO messages(author, body) VALUES
+('John', 'Hello.'),
+('Me', 'Go to coffee!'),
+('John', 'Go.');
+
+INSERT INTO messages(author, body) VALUES
+('Peter', 'Hello.'),
+('Peter', 'Hello.');
+
+INSERT INTO messages(id, body, author) VALUES (
+    NULL, 'Message text 4', 'Message author 4'
+);
