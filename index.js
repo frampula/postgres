@@ -1,17 +1,17 @@
-const { getUsers } = require("./api");
-const { User, client, Product } = require("./models");
-const { generatePhones } = require("./utils");
+const { User, Product, Order, client } = require('./models');
+const { getUsers } = require('./api');
+const { generatePhones } = require('./utils');
 
 async function runRequest() {
-  await client.connect();
+    await client.connect();
+ 
+    const { rows: usersArray } = await User.findAll(); 
+    const { rows: productsArray } = await Product.findAll(); 
+    const response = await Order.bulkCreate(usersArray, productsArray);
 
-  // const usersArray = await getUsers();
-  // const response = await User.bulkCreate(usersArray);
+    console.log(response);
 
-  const phonesArray = generatePhones(400);
-  const response = await Product.bulkCreate(phonesArray);
-  console.log(response);
-  await client.end();
+    await client.end();
 }
 
 runRequest();

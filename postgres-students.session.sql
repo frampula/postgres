@@ -34,3 +34,7 @@ CREATE TABLE orders_to_products( -- order_items
     PRIMARY KEY(order_id, products_id)
 );
 
+INSERT INTO orders (customer_id)
+VALUES (
+    10
+  ), (5)
