@@ -1,48 +1,45 @@
-DROP TABLE employees;
-
-CREATE TABLE employees(
+CREATE TABLE students (
     id serial PRIMARY KEY,
-    name varchar(200),
-    position varchar(300) REFERENCES positions(name)
+    name varchar(30)
 );
 
-INSERT INTO employees (name, position) VALUES
-('John', 'JS developer'),
-('Jane', 'Sales manager'),
-('Jake', 'Bodyguard for developers'),
-('Andrew', 'Driver');
-
-INSERT INTO employees (name, position) VALUES
-('Milena', 'CFO'),
-('Jane', 'CEO'),
-('Jake', 'SMM/PR division'),
-('Andrew', 'Accountant');
-
-CREATE TABLE positions(
-    name varchar(300) PRIMARY KEY,
-    department varchar(300),
-    car_aviability boolean
-);
-
-INSERT INTO positions (name, car_aviability) VALUES
-('JS developer', false),
-('Sales manager', false),
-('Bodyguard for developers', true),
-('Driver', true);
-
-INSERT INTO positions (name, car_aviability) VALUES
-('CFO', true),
-('CEO', true),
-('SMM/PR division', false),
-('Accountant', false);
-
--------------
-
-CREATE TABLE employees(
+CREATE TABLE teachers (
     id serial PRIMARY KEY,
-    name varchar(200),
-    department varchar(300),
-    position varchar(300),
-    car_aviability boolean
+    name varchar(30),
+    subject varchar(50) REFERENCES subjects(name)
 );
+
+CREATE TABLE subjects (
+    name varchar(50) PRIMARY KEY
+)
+
+CREATE TABLE students_to_teachers(
+    teacher_id int REFERENCES teachers(id),
+    student_id int REFERENCES students(id),
+    PRIMARY KEY (teacher_id, student_id)
+);
+
+INSERT INTO students_to_teachers VALUES
+(5, 1),
+(5, 2),
+(6, 1)
+
+INSERT INTO students (name) VALUES 
+('Ivanon'),
+('Petrov'),
+('Sidorov')
+
+INSERT INTO teachers (name, subject) VALUES 
+('Smirnov', 'Системы ИИ'),
+('Petrenko', 'Облачное программирование')
+
+INSERT INTO subjects VALUES
+('Системы ИИ'),
+('Облачное программирование')
+
+SELECT students.id, students.name, teachers.name, teachers.subject FROM 
+students JOIN students_to_teachers
+ON students.id = students_to_teachers.student_id
+JOIN teachers
+ON students_to_teachers.teacher_id = teachers.id
 
