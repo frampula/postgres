@@ -1,17 +1,9 @@
-const { User, Product, Order, client } = require('./models');
-const { getUsers } = require('./api');
-const { generatePhones } = require('./utils');
+const http = require('http');
+const app = require('./app');
+const PORT = process.env.PORT || 5000;
 
-async function runRequest() {
-    await client.connect();
- 
-    const { rows: usersArray } = await User.findAll(); 
-    const { rows: productsArray } = await Product.findAll(); 
-    const response = await Order.bulkCreate(usersArray, productsArray);
+const server = http.createServer(app);
 
-    console.log(response);
-
-    await client.end();
-}
-
-runRequest();
+server.listen(PORT, () => {
+    console.log(`App statrted on port ${PORT}`);
+});
